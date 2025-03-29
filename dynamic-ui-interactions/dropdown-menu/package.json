@@ -1,0 +1,16 @@
+{
+  "name": "dropdown-menu",
+  "version": "1.0.0",
+  "description": "My very first npm package! Nothing special, but baby steps. Ya know what I mean?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dropdown",
+    "menu",
+    "first-package"
+  ],
+  "author": "Vinson",
+  "license": "ISC"
+}
