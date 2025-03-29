@@ -1,0 +1,2 @@
+# About
+This is my very first npm package, which as the name states is a dropdown menu. It is very simple and just shows the dropdown content when the respective button is clicked. The functionality for showing and hiding the dropdown content itself is by toggling the `hidden` class. By doing so, the `display: none` property will be toggled like so.
