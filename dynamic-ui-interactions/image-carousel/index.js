@@ -1,9 +1,10 @@
 (function createNavigationDots() {
     const navigationContainer = document.querySelector('.navigation-container');
     const images = document.querySelectorAll('img');
+    const shoutouts = document.querySelectorAll('.image-shoutout');
     
     let position = 0;
-    images.forEach((image) => {
+    images.forEach(() => {
         const navigationDot = document.createElement('div');
         navigationDot.dataset.position = `${position}`;
         navigationDot.classList.add('navigation-dot');
@@ -13,6 +14,12 @@
         });
 
         navigationContainer.appendChild(navigationDot);
+        position += 400;
+    });
+
+    position = 0;
+    shoutouts.forEach((shoutout) => {
+        shoutout.dataset.shoutoutPosition = position;
         position += 400;
     });
 
@@ -69,6 +76,8 @@ function updateNavigationDot(position) {
 
     if (oldNavigationDot) oldNavigationDot.classList.remove('current-dot');
     navigationDot.classList.add('current-dot');
+
+    updateShoutout(position);
 }
 
 function navigationDotClicked(position) {
@@ -76,6 +85,14 @@ function navigationDotClicked(position) {
     updateNavigationDot(position);
     clearTimeout(timeout);
     startTimeout();
+}
+
+function updateShoutout(position) {
+    const shoutoutContainer = document.querySelector('.shoutout-container');
+    const shoutout = document.querySelector(`[data-shoutout-position='${position}']`).cloneNode(true);
+    
+    shoutoutContainer.replaceChildren();
+    shoutoutContainer.appendChild(shoutout);
 }
 
 function startTimeout() {
@@ -93,7 +110,7 @@ function startTimeout() {
     timeout = setTimeout(() => {
         changeSliderPosition(newPosition);
         updateNavigationDot(newPosition);
-
+        // continuously advances the slide until arrow or dot clicked
         startTimeout();
     }, 5000);
 };
