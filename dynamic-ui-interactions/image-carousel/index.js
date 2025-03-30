@@ -26,7 +26,7 @@
     leftArrowButton.addEventListener('click', () => {
         moveSlider('left');
     });
-    
+
     rightArrowButton.addEventListener('click', () => {
         moveSlider('right');
     });
@@ -53,6 +53,9 @@ function moveSlider(direction) {
 
     changeSliderPosition(newPosition);
     updateNavigationDot(newPosition);
+    // Update navigation dot first so startTimeout has the new position!
+    clearTimeout(timeout);
+    startTimeout();
 }
 
 function changeSliderPosition(position) {
@@ -71,12 +74,32 @@ function updateNavigationDot(position) {
 function navigationDotClicked(position) {
     changeSliderPosition(position);
     updateNavigationDot(position);
+    clearTimeout(timeout);
+    startTimeout();
 }
 
 function startTimeout() {
-    setTimeout(() => {
-        console.log('a');
+    const currentPosition = +document.querySelector('.current-dot').dataset.position;
+    let newPosition;
+
+    if (currentPosition === 2000) {
+        newPosition = 0;
+    } else {
+        newPosition = currentPosition + 400;
+    }
+
+    // Delete any preexisting timeout before creating a new one
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        changeSliderPosition(newPosition);
+        updateNavigationDot(newPosition);
+
+        startTimeout();
     }, 5000);
 };
+
+// Global variables are frowned upon, but for the scope of this
+// practice it is the best way to set and clear timeouts!
+let timeout;
 
 startTimeout();
