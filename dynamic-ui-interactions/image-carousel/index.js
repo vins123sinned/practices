@@ -8,6 +8,10 @@
         navigationDot.dataset.position = `${position}`;
         navigationDot.classList.add('navigation-dot');
 
+        navigationDot.addEventListener('click', () => {
+            navigationDotClicked(navigationDot.dataset.position);
+        });
+
         navigationContainer.appendChild(navigationDot);
         position += 400;
     });
@@ -15,18 +19,15 @@
     updateNavigationDot(0);
 })();
 
-(function leftArrowListener() {
-    const arrowButton = document.querySelector('.arrow-left');
+(function arrowListeners() {
+    const leftArrowButton = document.querySelector('.arrow-left');
+    const rightArrowButton = document.querySelector('.arrow-right');
 
-    arrowButton.addEventListener('click', () => {
+    leftArrowButton.addEventListener('click', () => {
         moveSlider('left');
     });
-})();
-
-(function rightArrowListener() {
-    const arrowButton = document.querySelector('.arrow-right');
-
-    arrowButton.addEventListener('click', () => {
+    
+    rightArrowButton.addEventListener('click', () => {
         moveSlider('right');
     });
 })();
@@ -50,8 +51,13 @@ function moveSlider(direction) {
         }
     }
 
-    imageSlider.style.left = `-${newPosition}px`;
+    changeSliderPosition(newPosition);
     updateNavigationDot(newPosition);
+}
+
+function changeSliderPosition(position) {
+    const imageSlider = document.querySelector('.image-slider');
+    imageSlider.style.left = `-${position}px`;
 }
 
 function updateNavigationDot(position) {
@@ -60,6 +66,11 @@ function updateNavigationDot(position) {
 
     if (oldNavigationDot) oldNavigationDot.classList.remove('current-dot');
     navigationDot.classList.add('current-dot');
+}
+
+function navigationDotClicked(position) {
+    changeSliderPosition(position);
+    updateNavigationDot(position);
 }
 
 function startTimeout() {
