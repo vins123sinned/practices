@@ -8,5 +8,42 @@
     <script src="./index.js" defer></script>
 </head>
 <body>
+    <form novalidate>
+        <h1>Regular Browser Form</h1>
+        <section>
+            <div>
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" minlength="3" required>
+            </div>
+        </section>
+        <section>
+            <h2></h2>
+            <div>
+                <label for="country">Country</label>
+                <select name="country" id="country">
+                    <option value="us">United States</option>
+                    <option value="cn">China</option>
+                    <option value="br">Brazil</option>
+                    <option value="mx">Mexico</option>
+                    <option value="jp">Japan</option>
+                </select>
+            </div>
+            <div>
+                <label for="postal-code">Postal Code</label>
+                <input type="text" id="postal-code" name="postal-code" minlength="2" required>
+            </div>
+        </section>
+        <section>
+            <div>
+                <label for="password">Password</label>
+                <input type="text" id="password" name="password" minlength="6" required>
+            </div>
+            <div>
+                <label for="confirm-password">Confirm Password</label>
+                <input type="text" id="confirm-password" name="confirm-password">
+            </div>
+        </section>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
