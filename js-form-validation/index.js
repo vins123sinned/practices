@@ -35,8 +35,18 @@
     initializePasswordValidation(passwordInput, passwordRegExp);
     
     passwordInput.addEventListener('input', () => {
-        console.log('changed!');
-    })
+        const passwordValidity = isValidPassword(passwordInput, passwordRegExp);
+        setPasswordClass(passwordInput, passwordValidity);
+        updatePasswordError(passwordInput, passwordError, passwordValidity)
+    });
+
+    passwordInput.addEventListener('focusin', () => {
+        passwordError.classList.remove('hidden');
+    });
+
+    passwordInput.addEventListener('focusout', () => {
+        passwordError.classList.add('hidden');
+    });
 })();
 
 function isValidEmail(emailInput, emailRegExp) {
@@ -132,14 +142,59 @@ function setPasswordClass(passwordInput, passwordValidity) {
     passwordInput.className = passwordValidity ? 'valid' : 'invalid';
 }
 
-function updatePasswordError(passwordInput, passwordError, passwordRegExp, isValidInput) {
+function updatePasswordError(passwordInput, passwordError, isValidInput) {
     if (isValidInput) {
-        passwordError.textContent = '';
+        //make any leftover close icon into checks
+        const closeIcon = document.querySelector('.close');
+        if (closeIcon) closeIcon.textContent = 'check';
         passwordError.removeAttribute('class');
-        return;
     } else {
-        //list
+        passwordError.replaceChildren();
         
+        const requirements = [
+            [
+                '(?=.*?[A-Z])',
+                'At least one uppercase letter',
+            ],
+            [
+                '(?=.*?[a-z])',
+                'At least one lowercase letter',
+            ],
+            [
+                '(?=.*?[0-9])',
+                'At least one digit',
+            ],
+            [
+                '(?=.*?[#?!@$%^&*-])',
+                'At least one special character (#?!@$%^&*-)',
+            ],
+            [
+                '^.{8,}$',
+                'Minimum of 8 characters'
+            ]
+        ];
+
+        requirements.forEach((requirement) => {
+            const requirementContainer = document.createElement('div');
+            const requirementIcon = document.createElement('span');
+            const requirementPara = document.createElement('para');
+
+            requirementIcon.classList.add('material-symbols-outlined');
+            requirementPara.textContent = requirement[1];
+
+            const constraint = new RegExp(requirement[0]);
+            if (constraint.test(passwordInput.value)) {
+                requirementIcon.textContent = 'check';
+                requirementIcon.classList.add('check');
+            } else {
+                requirementIcon.textContent = 'close';
+                requirementIcon.classList.add('close');
+            }
+
+            requirementContainer.appendChild(requirementIcon);
+            requirementContainer.appendChild(requirementPara);
+            passwordError.appendChild(requirementContainer);
+        });
     }
 }
 

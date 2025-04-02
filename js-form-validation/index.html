@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
     <script src="./index.js" defer></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,close" />
 </head>
 <body>
     <form novalidate>
@@ -13,7 +14,7 @@
         <section>
             <div>
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" minlength="3" required>
+                <input type="email" id="email" name="email" required>
                 <span id="email-error" aria-live="polite"></span>
             </div>
         </section>
@@ -31,14 +32,14 @@
             </div>
             <div>
                 <label for="postal-code">Postal Code</label>
-                <input type="text" id="postal-code" name="postal-code" minlength="2" required>
+                <input type="text" id="postal-code" name="postal-code" required>
                 <span id="postal-error" aria-live="polite"></span>
             </div>
         </section>
         <section>
             <div>
                 <label for="password">Password</label>
-                <input type="text" id="password" name="password" minlength="6" required>
+                <input type="text" id="password" name="password" autocomplete="off" required>
                 <span id="password-error" aria-live="polite"></span>
             </div>
             <div>
