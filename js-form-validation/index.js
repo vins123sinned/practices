@@ -1,13 +1,14 @@
 (function emailListener() {
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('email-error');
+    const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    initializeEmailValidation(emailInput);
+    initializeEmailValidation(emailInput, emailRegExp);
     
     emailInput.addEventListener('input', () => {
-        const emailValidity = isValidEmail(emailInput);
+        const emailValidity = isValidEmail(emailInput, emailRegExp);
         setEmailClass(emailInput, emailValidity);
-        updateEmailError(emailValidity, emailInput, emailError);
+        updateEmailError(emailInput, emailError, emailRegExp, emailValidity);
     });
 })();
 
@@ -25,17 +26,28 @@
     });
 })();
 
-const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+(function passwordListener() {
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('password-error');
+    // regExp by anubhava from stackOverflow (My regex isn't that good yet!)
+    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
-function isValidEmail(emailInput) {
+    initializePasswordValidation(passwordInput, passwordRegExp);
+    
+    passwordInput.addEventListener('input', () => {
+        console.log('changed!');
+    })
+})();
+
+function isValidEmail(emailInput, emailRegExp) {
     const validity = emailInput.value.length >= 3 &&
         emailRegExp.test(emailInput.value);
     return validity;
 }
 
 // might add this to all inputs or remove entirely
-function initializeEmailValidation(emailInput) {
-    const emailValidity = isValidEmail(emailInput);
+function initializeEmailValidation(emailInput, emailRegExp) {
+    const emailValidity = isValidEmail(emailInput, emailRegExp);
 
     setEmailClass(emailInput, emailValidity);
 }
@@ -44,7 +56,7 @@ function setEmailClass(emailInput, emailValidity) {
     emailInput.className = emailValidity ? 'valid' : 'invalid';
 }
 
-function updateEmailError(isValidInput, emailInput, emailError) {
+function updateEmailError(emailInput, emailError, emailRegExp, isValidInput) {
     if (isValidInput) {
         emailError.textContent = '';
         emailError.removeAttribute('class');
@@ -101,6 +113,33 @@ function checkPostalCode(postalError) {
     } else {
         postalError.textContent = constraints[country][1];
         postalError.setAttribute('class', 'active');
+    }
+}
+
+function isValidPassword(passwordInput, passwordRegExp) {
+    const validity = passwordInput.value.length >= 6 &&
+        passwordRegExp.test(passwordInput.value);
+    return validity;
+}
+
+function initializePasswordValidation(passwordInput, passwordRegExp) {
+    const passwordValidity = isValidPassword(passwordInput, passwordRegExp);
+
+    setPasswordClass(passwordInput, passwordValidity);
+}
+
+function setPasswordClass(passwordInput, passwordValidity) {
+    passwordInput.className = passwordValidity ? 'valid' : 'invalid';
+}
+
+function updatePasswordError(passwordInput, passwordError, passwordRegExp, isValidInput) {
+    if (isValidInput) {
+        passwordError.textContent = '';
+        passwordError.removeAttribute('class');
+        return;
+    } else {
+        //list
+        
     }
 }
 
