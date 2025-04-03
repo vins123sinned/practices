@@ -37,7 +37,9 @@
     passwordInput.addEventListener('input', () => {
         const passwordValidity = isValidPassword(passwordInput, passwordRegExp);
         setPasswordClass(passwordInput, passwordValidity);
-        updatePasswordError(passwordInput, passwordError, passwordValidity)
+        updatePasswordError(passwordInput, passwordError, passwordValidity);
+        
+        doubleCheckConfirm();
     });
 
     passwordInput.addEventListener('focusin', () => {
@@ -46,6 +48,19 @@
 
     passwordInput.addEventListener('focusout', () => {
         passwordError.classList.add('hidden');
+    });
+})();
+
+(function confirmPasswordlistener() {
+    const confirmInput = document.getElementById('confirm-password');
+    const confirmError = document.getElementById('confirm-error');
+
+    initializeConfirmValidation(confirmInput);
+
+    confirmInput.addEventListener('input', () => {
+        const confirmValidity = isValidConfirm(confirmInput);
+        setConfirmClass(confirmInput, confirmValidity);
+        updateConfirmError(confirmError, confirmValidity);
     });
 })();
 
@@ -196,6 +211,42 @@ function updatePasswordError(passwordInput, passwordError, isValidInput) {
             passwordError.appendChild(requirementContainer);
         });
     }
+}
+
+function isValidConfirm(confirmInput) {
+    const passwordValue = document.getElementById('password').value;
+    const validity = confirmInput.value === passwordValue;
+    
+    return validity;
+}
+
+function initializeConfirmValidation(confirmInput) {
+    const confirmValidity = isValidConfirm(confirmInput);
+
+    setConfirmClass(confirmInput, confirmValidity);
+}
+
+function setConfirmClass(confirmInput, confirmValidity) {
+    confirmInput.className = confirmValidity ? 'valid' : 'invalid';
+}
+
+function updateConfirmError(confirmError, isValidInput) {
+    if (isValidInput) {
+        confirmError.textContent = '';
+        confirmError.removeAttribute('class');
+    } else {
+        confirmError.textContent = 'Passwords do not match!';
+        confirmError.setAttribute('class', 'active');
+    }
+}
+
+function doubleCheckConfirm() {
+    const confirmInput = document.getElementById('confirm-password');
+    const confirmError = document.getElementById('confirm-error');
+
+    const confirmValidity = isValidConfirm(confirmInput);
+    setConfirmClass(confirmInput, confirmValidity);
+    updateConfirmError(confirmError, confirmValidity);
 }
 
 /*
