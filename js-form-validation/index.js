@@ -17,12 +17,41 @@
     const postalInput = document.getElementById('postal-code');
     const postalError = document.getElementById('postal-error');
 
+    const constraints = {
+        us: [
+            '^(US-)?\\d{5}$',
+            'U.S. postal codes must have exactly 5 digits: e.g. US-94027 or 33109',
+        ],
+        cn: [
+            '^(CN-)?\\d{6}$',
+            'Chinese postal codes must have exactly 6 digits: e.g. CN-350316 or 361006',
+        ],
+        is: [
+            '^(IS-)?\\d{3}$',
+            'Icelandic postal codes must have exactly 3 digits: e.g. IS-101 or 220',
+        ],
+        au: [
+            '^(AU-)\\d{4}$',
+            'Australian postal codes must have exactly 4 digits: e.g. AU-0872 or 2750',
+        ],
+        eg: [
+            '^(EG-)\\d{7}$',
+            'Egyptian postal codes must have exactly 7 digits: e.g. EG-3512201 or 4252360',
+        ],
+    };
+
+    initializePostalValidation(postalInput, constraints);
+
     countryInput.addEventListener('change', () => {
         countryChanged(postalInput, postalError);
     });
 
     postalInput.addEventListener('input', () => {
-        checkPostalCode(postalError);
+        const country = document.getElementById('country').value;
+        const constraint = new RegExp(constraints[country][0], '');
+        const postalValidity = isValidPostal(postalInput, constraint);
+        setPostalClass(postalInput, postalValidity);
+        updatePostalError(postalError, constraints);
     });
 })();
 
@@ -64,6 +93,10 @@
     });
 })();
 
+(function submitListener() {
+
+})();
+
 function isValidEmail(emailInput, emailRegExp) {
     const validity = emailInput.value.length >= 3 &&
         emailRegExp.test(emailInput.value);
@@ -95,6 +128,24 @@ function updateEmailError(emailInput, emailError, emailRegExp, isValidInput) {
     emailError.setAttribute('class', 'active');
 }
 
+function isValidPostal(postalInput, postalRegExp) {
+    const validity = postalRegExp.test(postalInput.value);
+    return validity;
+}
+
+function initializePostalValidation(postalInput, constraints) {
+    const country = document.getElementById('country').value;
+    const constraint = new RegExp(constraints[country][0], '');
+
+    const postalValidity = isValidPostal(postalInput, constraint);
+
+    setPostalClass(postalInput, postalValidity)
+}
+
+function setPostalClass(postalInput, postalValidity) {
+    postalInput.className = postalValidity ? 'valid' : 'invalid';
+}
+
 function countryChanged(postalInput, postalError) {
     if (postalInput.value.length !== 0) {
         checkPostalCode(postalError)
@@ -104,35 +155,12 @@ function countryChanged(postalInput, postalError) {
     }
 }
 
-function checkPostalCode(postalError) {
-    const constraints = {
-        us: [
-            '^(US-)?\\d{5}$',
-            'U.S. postal codes must have exactly 5 digits: e.g. US-94027 or 33109',
-        ],
-        cn: [
-            '^(CN-)?\\d{6}$',
-            'Chinese postal codes must have exactly 6 digits: e.g. CN-350316 or 361006',
-        ],
-        is: [
-            '^(IS-)?\\d{3}$',
-            'Icelandic postal codes must have exactly 3 digits: e.g. IS-101 or 220',
-        ],
-        au: [
-            '^(AU-)\\d{4}$',
-            'Australian postal codes must have exactly 4 digits: e.g. AU-0872 or 2750',
-        ],
-        eg: [
-            '^(EG-)\\d{7}$',
-            'Egyptian postal codes must have exactly 7 digits: e.g. EG-3512201 or 4252360',
-        ],
-    };
-
+function updatePostalError(postalError, constraints) {
     const country = document.getElementById('country').value;
-    const postalCodeInput = document.getElementById('postal-code');
+    const postalInput = document.getElementById('postal-code');
     const constraint = new RegExp(constraints[country][0], '');
 
-    if (constraint.test(postalCodeInput.value)) {
+    if (constraint.test(postalInput.value)) {
         postalError.textContent = '';
         postalError.removeAttribute('class');
     } else {
@@ -248,6 +276,8 @@ function doubleCheckConfirm() {
     setConfirmClass(confirmInput, confirmValidity);
     updateConfirmError(confirmError, confirmValidity);
 }
+
+//submit functionality and finally style!
 
 /*
 const handleSubmit = (event) => {
