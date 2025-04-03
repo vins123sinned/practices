@@ -94,7 +94,9 @@
 })();
 
 (function submitListener() {
-
+    const submit = document.getElementById('submit');
+    
+    submit.addEventListener('click', handleSubmit);
 })();
 
 function isValidEmail(emailInput, emailRegExp) {
@@ -103,7 +105,6 @@ function isValidEmail(emailInput, emailRegExp) {
     return validity;
 }
 
-// might add this to all inputs or remove entirely
 function initializeEmailValidation(emailInput, emailRegExp) {
     const emailValidity = isValidEmail(emailInput, emailRegExp);
 
@@ -277,17 +278,70 @@ function doubleCheckConfirm() {
     updateConfirmError(confirmError, confirmValidity);
 }
 
-//submit functionality and finally style!
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    // possibly redundant, but serves as a good reference for future forms!
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-/*
-const handleSubmit = (event) => {
-  event.preventDefault();
+    const constraints = {
+        us: [
+            '^(US-)?\\d{5}$',
+            'U.S. postal codes must have exactly 5 digits: e.g. US-94027 or 33109',
+        ],
+        cn: [
+            '^(CN-)?\\d{6}$',
+            'Chinese postal codes must have exactly 6 digits: e.g. CN-350316 or 361006',
+        ],
+        is: [
+            '^(IS-)?\\d{3}$',
+            'Icelandic postal codes must have exactly 3 digits: e.g. IS-101 or 220',
+        ],
+        au: [
+            '^(AU-)\\d{4}$',
+            'Australian postal codes must have exactly 4 digits: e.g. AU-0872 or 2750',
+        ],
+        eg: [
+            '^(EG-)\\d{7}$',
+            'Egyptian postal codes must have exactly 7 digits: e.g. EG-3512201 or 4252360',
+        ],
+    };
+    const postalInput = document.getElementById('postal-code');
+    const postalError = document.getElementById('postal-error');
+    const country = document.getElementById('country').value;
+    const constraint = new RegExp(constraints[country][0], '');
 
-  const emailInput = isValidEmail();
-  setEmailClass(emailInput);
-  updateEmailError(emailInput);
-};
-*/
+    const passwordInput = document.getElementById('password');
+    const passwordError = document.getElementById('password-error');
+    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
-// is it better to do { arrays } or [ objects ]?
-// and what does \\ mean in regex? I'll ask ChatGPT later
+    const confirmInput = document.getElementById('confirm-password');
+    const confirmError = document.getElementById('confirm-error');
+
+    const emailValidity = isValidEmail(emailInput, emailRegExp);
+    setEmailClass(emailInput, emailValidity);
+    updateEmailError(emailInput, emailError, emailRegExp, emailValidity);
+
+    const postalValidity = isValidPostal(postalInput, constraint);
+    setPostalClass(postalInput, postalValidity);
+    updatePostalError(postalError, constraints);
+
+    const passwordValidity = isValidPassword(passwordInput, passwordRegExp);
+    setPasswordClass(passwordInput, passwordValidity);
+    updatePasswordError(passwordInput, passwordError, passwordValidity);
+
+    const confirmValidity = isValidConfirm(confirmInput);
+    setConfirmClass(confirmInput, confirmValidity);
+    updateConfirmError(confirmError, confirmValidity);
+
+    if (emailValidity && postalValidity &&
+        passwordValidity && confirmValidity) {
+            document.body.replaceChildren();
+
+            const congratulations = document.createElement('h1');
+            congratulations.textContent = 'You did it!';
+            document.body.appendChild(congratulations);
+    }
+}
