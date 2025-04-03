@@ -21,29 +21,35 @@
         us: [
             '^(US-)?\\d{5}$',
             'U.S. postal codes must have exactly 5 digits: e.g. US-94027 or 33109',
+            '12345',
         ],
         cn: [
             '^(CN-)?\\d{6}$',
             'Chinese postal codes must have exactly 6 digits: e.g. CN-350316 or 361006',
+            '123456',
         ],
         is: [
             '^(IS-)?\\d{3}$',
             'Icelandic postal codes must have exactly 3 digits: e.g. IS-101 or 220',
+            '123',
         ],
         au: [
             '^(AU-)\\d{4}$',
             'Australian postal codes must have exactly 4 digits: e.g. AU-0872 or 2750',
+            '1234',
         ],
         eg: [
             '^(EG-)\\d{7}$',
             'Egyptian postal codes must have exactly 7 digits: e.g. EG-3512201 or 4252360',
+            '1234567',
         ],
     };
 
     initializePostalValidation(postalInput, constraints);
 
     countryInput.addEventListener('change', () => {
-        countryChanged(postalInput, postalError);
+        const placeholder = constraints[countryInput.value][2];
+        countryChanged(postalInput, postalError, placeholder, constraints);
     });
 
     postalInput.addEventListener('input', () => {
@@ -126,7 +132,7 @@ function updateEmailError(emailInput, emailError, emailRegExp, isValidInput) {
         emailError.textContent = 'Value is not an email!';
     }
 
-    emailError.setAttribute('class', 'active');
+    emailError.classList.add('error');
 }
 
 function isValidPostal(postalInput, postalRegExp) {
@@ -140,16 +146,19 @@ function initializePostalValidation(postalInput, constraints) {
 
     const postalValidity = isValidPostal(postalInput, constraint);
 
-    setPostalClass(postalInput, postalValidity)
+    setPostalClass(postalInput, postalValidity);
+    postalInput.placeholder = constraints[country][2];
 }
 
 function setPostalClass(postalInput, postalValidity) {
     postalInput.className = postalValidity ? 'valid' : 'invalid';
 }
 
-function countryChanged(postalInput, postalError) {
+function countryChanged(postalInput, postalError, placeholder, constraints) {
+    postalInput.placeholder = placeholder;
+
     if (postalInput.value.length !== 0) {
-        checkPostalCode(postalError)
+        updatePostalError(postalError, constraints);
     } else if (postalError.innerHTML) {
         postalError.textContent = '';
         postalError.removeAttribute('class');
@@ -166,7 +175,7 @@ function updatePostalError(postalError, constraints) {
         postalError.removeAttribute('class');
     } else {
         postalError.textContent = constraints[country][1];
-        postalError.setAttribute('class', 'active');
+        postalError.classList.add('error');
     }
 }
 
@@ -239,6 +248,8 @@ function updatePasswordError(passwordInput, passwordError, isValidInput) {
             requirementContainer.appendChild(requirementPara);
             passwordError.appendChild(requirementContainer);
         });
+
+        passwordError.classList.add('error');
     }
 }
 
@@ -265,7 +276,7 @@ function updateConfirmError(confirmError, isValidInput) {
         confirmError.removeAttribute('class');
     } else {
         confirmError.textContent = 'Passwords do not match!';
-        confirmError.setAttribute('class', 'active');
+        confirmError.classList.add('error');
     }
 }
 
@@ -331,6 +342,8 @@ function handleSubmit(event) {
     const passwordValidity = isValidPassword(passwordInput, passwordRegExp);
     setPasswordClass(passwordInput, passwordValidity);
     updatePasswordError(passwordInput, passwordError, passwordValidity);
+
+    if (passwordError.classList.contains('hidden')) passwordError.classList.remove('hidden');
 
     const confirmValidity = isValidConfirm(confirmInput);
     setConfirmClass(confirmInput, confirmValidity);

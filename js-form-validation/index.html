@@ -10,17 +10,17 @@
 </head>
 <body>
     <form novalidate>
-        <h1>Regular Browser Form</h1>
+        <h1 class="form-heading">Regular Browser Form</h1>
         <section>
-            <div>
+            <div class="input-container">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
                 <span id="email-error" aria-live="polite"></span>
             </div>
         </section>
         <section>
             <h2></h2>
-            <div>
+            <div class="input-container">
                 <label for="country">Country</label>
                 <select name="country" id="country">
                     <option value="us">United States</option>
@@ -30,19 +30,19 @@
                     <option value="eg">Egypt</option>
                 </select>
             </div>
-            <div>
+            <div class="input-container">
                 <label for="postal-code">Postal Code</label>
                 <input type="text" id="postal-code" name="postal-code" required>
                 <span id="postal-error" aria-live="polite"></span>
             </div>
         </section>
         <section>
-            <div>
+            <div class="input-container">
                 <label for="password">Password</label>
                 <input type="text" id="password" name="password" autocomplete="off" required>
                 <span id="password-error" aria-live="polite"></span>
             </div>
-            <div>
+            <div class="input-container">
                 <label for="confirm-password">Confirm Password</label>
                 <input type="text" id="confirm-password" name="confirm-password">
                 <span id="confirm-error" aria-live="polite"></span>
