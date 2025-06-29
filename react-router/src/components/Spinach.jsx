@@ -5,7 +5,7 @@ const Spinach = () => {
     <>
       <p>Wait... why is spinach here?</p>
       <p>Oh... Wrong popeyes.</p>
-      <Link to="/">Go back</Link>
+      <Link to="/profile">Go back</Link>
     </>
   );
 };

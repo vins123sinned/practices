@@ -11,6 +11,9 @@ function App() {
           <li>
             <Link to="profile">Profile Page</Link>
           </li>
+          <li>
+            <Link to="roblox">Roblox</Link>
+          </li>
         </ul>
       </nav>
     </div>

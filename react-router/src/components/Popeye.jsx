@@ -4,7 +4,7 @@ const Popeye = () => {
 	return (
 		<>
 			<p>Love that chicken from Popeyes!</p>
-			<Link to="/">Go back</Link>
+			<Link to="/profile">Go back</Link>
 		</>
 	);
 };
