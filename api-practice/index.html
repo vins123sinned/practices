@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Practice</title>
+</head>
+<body>
+    <img src="#">
+    <span class="error"></span>
+    <form>
+        <div>
+            <label for="search">Search A Gif</label>
+            <input type="text" id="search" name="search">
+        </div>
+        <button type="submit">Generate new gif</button>
+    </form>
+    <script>
+        const img = document.querySelector('img');
+        const button = document.querySelector('button');
+
+        button.addEventListener('click', generateImage);
+
+        function generateImage(event) {
+            event.preventDefault();
+            clearError();
+
+            const input = document.getElementById('search');
+            if (input.value.length === 0) return showError('Search is empty!');
+
+            const query = input.value.replace(/ /g, '-');
+            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=hlxc6vG5U6uEWgPzYu2gEm163jvAhNa2&s=${query}&rating=g`, {mode: 'cors'})
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                if (response.data.length === 0) return showError('No matching gifs!');
+                img.src = response.data.images.original.url;
+            })
+            .catch((error) => {
+                console.log('Error: ', error);
+            });
+        }
+
+        const generateRandomImage = () => {
+            fetch('https://api.giphy.com/v1/gifs/random?api_key=11au34A7kpZTsRg6Ptc8PHmvWBN4jHV9&rating=g', {mode: 'cors'})
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                img.src = response.data.images.original.url;
+            })
+            .catch((error) => {
+                console.log('Error: ', error);
+            });
+        }
+
+        const showError = (message) => {
+            const error = document.querySelector('.error');
+            const errorMessage = document.createElement('p');
+            const generateMessage = document.createElement('p');
+
+            errorMessage.textContent = message;
+            generateMessage.textContent = 'Generating random gif...';
+
+            error.appendChild(errorMessage);
+            error.appendChild(generateMessage);
+
+            generateRandomImage();
+        }
+
+        const clearError = () => {
+            const error = document.querySelector('.error');
+            if (error.innerHTML) error.replaceChildren();
+        }
+
+        generateRandomImage();
+    </script>
+</body>
+</html>
