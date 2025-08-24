@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAuthorById } from '../controllers/authorController';
+import { getAuthorById } from '../controllers/authorController.js';
 
 const authorRouter = Router();
 
