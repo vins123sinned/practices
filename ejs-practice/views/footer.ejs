@@ -1,0 +1,12 @@
+<nav>
+  <h2>Footer Here!</h2>
+  <ul>
+    <% for (let i = 0; i < footerContent.length; i++) { %>
+      <li>
+        <a href="<%= footerContent[i].href %>">
+          <span> <%= footerContent[i].text %> </span>
+        </a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
