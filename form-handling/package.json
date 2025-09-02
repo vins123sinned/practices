@@ -1,0 +1,23 @@
+{
+  "name": "form-handling",
+  "version": "1.0.0",
+  "description": "A practice with express-validator and form handling in Express!",
+  "keywords": [
+    "form",
+    "handling",
+    "form-handling",
+    "keyword-here"
+  ],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1"
+  }
+}
