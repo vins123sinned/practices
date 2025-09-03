@@ -27,14 +27,13 @@ class UsersStorage {
   }
 
   searchUsers(query) {
-    // string.includes()
     const searchResults = [];
 
     Object.keys(this.storage).forEach((id) => {
       const user = this.storage[id];
-      const fullName = `${user.firstName} ${user.lastName}`;
+      const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
 
-      if (fullName.includes(query)) searchResults.push(user);
+      if (fullName.includes(query.toLowerCase()) || user.email.includes(query.toLowerCase())) searchResults.push(user);
     });
 
     return searchResults;
