@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %>></title>
+  <title><%= title %></title>
 </head>
 <body>
   <h1><%= title %></h1>
   <%- include("partials/errors.ejs") %>
-  <form action="/create" method="POST">
+  <form action="/create" method="POST" novalidate>
     <p>
       <label for="firstName">First Name: </label>
       <input type="text" name="firstName" id="firstName" required>
@@ -16,6 +16,18 @@
     <p>
       <label for="lastName">Last Name: </label>
       <input type="text" name="lastName" id="lastName" required>
+    </p>
+    <p>
+      <label for="email">Email: </label>
+      <input type="email" name="email" id="email" required>
+    </p>
+    <p>
+      <label for="age">Age: </label>
+      <input type="number" name="age" id="age" min="18" max="120">
+    </p>
+    <p>
+      <label for="bio">Bio: </label>
+      <textarea name="bio" id="bio" maxlength="200"></textarea>
     </p>
     <button type="submit">Submit</button>
   </form>

@@ -3,14 +3,29 @@ import { usersStorage } from "../storages/usersStorage.js";
 
 const alphaErr = "must only contain letters";
 const lengthErr = "must be between 1 and 10 characters";
+const notEmptyErr = "must not be empty";
+const emailErr = "must be a valid email address (example@domain.com)";
+const ageErr = "must be between 18 and 120"
+const maxLengthErr = "must not be more than 200 characters long";
 
 const validateUser = [
   body("firstName").trim()
+    .notEmpty().withMessage(`First name ${notEmptyErr}`)
     .isAlpha().withMessage(`First name ${alphaErr}`)
     .isLength({ min: 1, max: 10 }).withMessage(`First name ${lengthErr}`),
   body("lastName").trim()
+    .notEmpty().withMessage(`Last name ${notEmptyErr}`)
     .isAlpha().withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
+  body("email").trim()
+    .notEmpty().withMessage(`Email address ${notEmptyErr}`)
+    .isEmail().withMessage(`Email address ${emailErr}`),
+  body("age").trim()
+    .optional({ values: "falsy" })
+    .isInt({ min: 18, max: 120 }).withMessage(`Age ${ageErr}`),
+  body("bio").trim()
+    .optional({ values: "falsy" })
+    .isLength({ min: 1, max: 200 }).withMessage(`Bio ${maxLengthErr}`),
 ];
 
 const usersListGet = (req, res) => {
@@ -37,8 +52,8 @@ const usersCreatePost = [
       });
     }
 
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
+    const { firstName, lastName, email, age, bio } = req.body;
+    usersStorage.addUser({ firstName, lastName, email, age, bio });
     res.redirect("/");
   }
 ];
@@ -68,8 +83,8 @@ const usersUpdatePost = [
       });
     }
 
-    const { firstName, lastName } = req.body;
-    usersStorage.updateUser(userId, { firstName, lastName });
+    const { firstName, lastName, email, age, bio } = req.body;
+    usersStorage.updateUser(userId, { firstName, lastName, email, age, bio });
     res.redirect("/");
   }
 ];
