@@ -25,6 +25,20 @@ class UsersStorage {
   deleteUser(id) {
     delete this.storage[id];
   }
+
+  searchUsers(query) {
+    // string.includes()
+    const searchResults = [];
+
+    Object.keys(this.storage).forEach((id) => {
+      const user = this.storage[id];
+      const fullName = `${user.firstName} ${user.lastName}`;
+
+      if (fullName.includes(query)) searchResults.push(user);
+    });
+
+    return searchResults;
+  }
 }
 
 export const usersStorage = new UsersStorage();

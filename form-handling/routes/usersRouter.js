@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { usersListGet, usersCreateGet, usersCreatePost, usersUpdateGet, usersUpdatePost, usersDeletePost } from "../controllers/usersController.js";
+import { usersListGet, usersCreateGet, usersCreatePost, usersUpdateGet, usersUpdatePost, usersDeletePost, usersSearchGet } from "../controllers/usersController.js";
 
 const usersRouter = Router();
 
@@ -9,5 +9,6 @@ usersRouter.post("/create", usersCreatePost);
 usersRouter.get("/:userId/update", usersUpdateGet);
 usersRouter.post("/:userId/update", usersUpdatePost);
 usersRouter.post("/:userId/delete", usersDeletePost);
+usersRouter.get("/search", usersSearchGet);
 
 export { usersRouter };

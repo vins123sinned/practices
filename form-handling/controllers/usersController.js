@@ -96,6 +96,16 @@ const usersDeletePost = (req, res) => {
   res.redirect("/");
 }
 
+const usersSearchGet = (req, res) => {
+  const { query } = req.query;
+
+  const searchResults = usersStorage.searchUsers(query);
+  res.render("search", {
+    title: "Search results",
+    searchResults: searchResults,
+  });
+}
+
 export { 
   usersListGet, 
   usersCreateGet, 
@@ -103,4 +113,5 @@ export {
   usersUpdateGet,
   usersUpdatePost,
   usersDeletePost,
+  usersSearchGet,
 };
