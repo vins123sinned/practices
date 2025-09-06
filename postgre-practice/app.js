@@ -3,7 +3,9 @@ import { indexRouter } from "./routers/indexRouter.js";
 
 const app = express();
 
-app.set("view engine", "express");
+app.use(express.urlencoded({ extended: true }));
+
+app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use('/', indexRouter);

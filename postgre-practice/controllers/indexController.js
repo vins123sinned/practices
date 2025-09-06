@@ -1,5 +1,12 @@
-const indexUsersGet = (req, res) => {
-  res.send("Usernames here")
+import { getAllUsernames, insertUsername } from "../db/queries.js";
+
+const indexUsersGet = async (req, res) => {
+  const usernames = await getAllUsernames();
+  console.log("Usernames: ", usernames);
+  res.render("index", {
+    title: "All usernames",
+    usernames,
+  });
 };
 
 const indexCreateGet = (req, res) => {
@@ -8,8 +15,10 @@ const indexCreateGet = (req, res) => {
   });
 };
 
-const indexCreatePost = (req, res) => {
-  res.send("Creating and adding username...");
+const indexCreatePost = async (req, res) => {
+  const { username } = req.body;
+  await insertUsername(username);
+  res.redirect("/");
 }
 
 export { indexUsersGet, indexCreateGet, indexCreatePost };
