@@ -1,4 +1,4 @@
-import { getAllUsernames, insertUsername } from "../db/queries.js";
+import { deleteAllUsernames, getAllUsernames, insertUsername, searchUsername } from "../db/queries.js";
 
 const indexUsersGet = async (req, res) => {
   const usernames = await getAllUsernames();
@@ -21,4 +21,23 @@ const indexCreatePost = async (req, res) => {
   res.redirect("/");
 }
 
-export { indexUsersGet, indexCreateGet, indexCreatePost };
+const indexSearchGet = async (req, res) => {
+  const { query } = req.query;
+  const usernames = await searchUsername(query);
+  res.render("search", {
+    title: "Search results",
+    usernames,
+  });
+};
+
+const indexDeleteGet = async (req, res) => {
+  await deleteAllUsernames();
+  
+  const usernames = await getAllUsernames()
+  res.render("index", {
+    title: "All usernames",
+    usernames,
+  });
+};
+
+export { indexUsersGet, indexCreateGet, indexCreatePost, indexSearchGet, indexDeleteGet };

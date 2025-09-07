@@ -1,4 +1,5 @@
 import express from "express";
+import "dotenv/config";
 import { indexRouter } from "./routers/indexRouter.js";
 
 const app = express();
@@ -10,7 +11,7 @@ app.set("views", "views");
 
 app.use('/', indexRouter);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
   if (error) throw error;
   
