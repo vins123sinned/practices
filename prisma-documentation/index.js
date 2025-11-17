@@ -3,43 +3,35 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const user = await prisma.user.create({
+  const usersAndPosts = await prisma.user.create({
     data: {
-      email: "vinsinius@gmail.com",
-      name: "Vinsinius Antonius Justicius",
       posts: {
-        create: [
-          {
-            title: "My first day with Prisma",
-            categories: {
-              create: {
-                name: "Programming",
-              },
-            },
-          },
-          {
-            title: "My nemesis is my phone?!",
-            categories: {
-              create: [{ name: "lifestyle" }, { name: "personal" }],
-            },
-          },
-        ],
+        create: [{ title: "I like burgers" }, { title: "I love sushi" }],
       },
     },
   });
 
-  const returnUser = await prisma.user.findUnique({
-    where: { id: user.id },
+  const getAuthor = await prisma.user.findUnique({
+    where: {
+      id: 1,
+    },
     include: {
+      posts: true,
+    },
+  });
+
+  const updateAuthor = await prisma.user.update({
+    where: {
+      id: 1,
+    },
+    data: {
       posts: {
-        include: {
-          categories: true,
+        connect: {
+          id: 4,
         },
       },
     },
   });
-
-  console.log(returnUser);
 }
 
 main();
