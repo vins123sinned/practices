@@ -3,32 +3,58 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const usersAndPosts = await prisma.user.create({
-    data: {
+  const user = await prisma.user.create({
+    include: {
       posts: {
-        create: [{ title: "I like burgers" }, { title: "I love sushi" }],
+        include: {
+          categories: true,
+        },
       },
     },
-  });
-
-  const getAuthor = await prisma.user.findUnique({
-    where: {
-      id: 1,
-    },
-    include: {
-      posts: true,
-    },
-  });
-
-  const updateAuthor = await prisma.user.update({
-    where: {
-      id: 1,
-    },
     data: {
+      email: "philosopher@gmail.com",
+      name: "Sphere-ous Orb User",
       posts: {
-        connect: {
-          id: 4,
-        },
+        create: [
+          {
+            title: "The Hedonistic King",
+            categories: {
+              connectOrCreate: [
+                {
+                  create: { name: "Penguins" },
+                  where: {
+                    name: "Penguins",
+                  },
+                },
+                {
+                  create: { name: "Romaine Kings" },
+                  where: {
+                    name: "Romaine Kings",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            title: "My Philosophy (NEW!)",
+            categories: {
+              connectOrCreate: [
+                {
+                  create: { name: "Penguins" },
+                  where: {
+                    name: "Penguins",
+                  },
+                },
+                {
+                  create: { name: "Philosophy" },
+                  where: {
+                    name: "Philosophy",
+                  },
+                },
+              ],
+            },
+          },
+        ],
       },
     },
   });
